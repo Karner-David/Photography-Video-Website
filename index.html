@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Photography</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <nav>
+            <a href="#">Photos</a>
+            <button>Sign Up</button>
+        </nav>
+        <div class="container">
+            <h1>
+                My Photos
+            </h1>
+        </div>
+
+        <div class="gallery">
+            <div class="minimap">
+                <div class="preview"></div>
+            </div>
+
+            <div class="images">
+                <div class="img">
+                    <img src="/Photos/img1.jpeg" alt="Cornell bridge during the sunset">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img2.jpeg" alt="Downtown Water Reflection #1">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img3.jpeg" alt="Downtown Water Reflection #2">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img4.jpeg" alt="Downtown Water Reflection #3">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img5.jpeg" alt="Tree with pretty colors">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img6.jpeg" alt="Seven Eleven">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img7.jpeg" alt="Street Pose">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img8.jpeg" alt="Galveston Sunrise">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img9.jpeg" alt="Sunset #1">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img10.jpeg" alt="Sunset #2">
+                </div>
+                <div class="img">
+                    <img src="/Photos/img11.jpeg" alt="Universal Federal Credit Union Pretty">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>
+                BLAH BLAH BLAH
+
+            </h1>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+        <script>
+            function createGetNextLeft() {
+                const values = [-15, -7.5, 0, 7.5, 15];
+                let currentIndex = 0;
+                let direction = 1;
+
+                return function getNextLeft() {
+                    const value = values[currentIndex];
+                    if (currentIndex === 0) {
+                        direction = 1;
+                    } else if (currentIndex === values.length - 1) {
+                        direction = -1;
+                    }
+                    currentIndex = (currentIndex + direction) % values.length;
+                    return value + 'px';
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const numOfImages = 11;
+                const minimap = document.querySelector(".minimap .preview");
+                const fullSizeContainer = document.querySelector(".images");
+
+                const getRandomLeft = createGetNextLeft();
+
+                minimap.innerHTML = '';
+                fullSizeContainer.innerHTML = '';
+
+                let activeThumbnail = null;
+
+                for (let i = 1; i <= numOfImages; i++) {
+                    const randomLeft = getRandomLeft();
+                    const imagePath = `./Photos/img${i}.jpeg`;
+
+                    const thumbnailDiv = document.createElement('div');
+                    thumbnailDiv.className = 'img-thumbnail';
+                    thumbnailDiv.style.left = randomLeft;
+
+                    const imgThumbnail = document.createElement('img');
+                    imgThumbnail.src = imagePath;
+                    thumbnailDiv.appendChild(imgThumbnail);
+                    minimap.appendChild(thumbnailDiv);
+
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'img';
+                    imgDiv.style.left = randomLeft;
+                    const imgFull = document.createElement('img');
+                    imgFull.src = imagePath;
+                    imgDiv.appendChild(imgFull);
+                    fullSizeContainer.appendChild(imgDiv);
+
+                    gsap.registerPlugin(ScrollTrigger);
+                    ScrollTrigger.create({
+                        trigger: imgDiv,
+                        start: "top center",
+                        end: "bottom center",
+                        onToggle: self => {
+                            if (self.isActive) {
+                                if (activeThumbnail && activeThumbnail !== thumbnailDiv) {
+                                    animateThumbnail(activeThumbnail, false);
+                                }
+
+                                animateThumbnail(thumbnailDiv, true);
+                                activeThumbnail = thumbnailDiv;
+                            } else if (activeThumbnail === thumbnailDiv) {
+                                animateThumbnail(thumbnailDiv, false);
+                            }
+                        }
+                    });
+                    thumbnailDiv.addEventListener('click', function() {
+                        imgDiv.scrollIntoView({ behavior: 'smooth' }); // Scroll to the corresponding full-size image
+                    });
+                }
+
+                function animateThumbnail(thumbnail, isActive) {
+                    gsap.to(thumbnail, {
+                        border: isActive ? '2px solid #fff' : '2px solid #808080',
+                        opacity: isActive ? 1 : 0.5,
+                        scale: isActive ? 1.3 : 1,
+                        zindex: isActive ? 10 : 1,
+                        duration: 0.3,
+                    })
+                }
+            });
+        </script>
+    </body>
+</html>
