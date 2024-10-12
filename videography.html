@@ -7,8 +7,16 @@
         <title>Videography</title>
     </head>
     <body>
+        <nav>
+            <div class="toggle-container">
+                <div class="slider-background"></div>
+                <a href="index.html" class="photos-button" id="photos">PHOTOS</a>
+                <a href="videography.html" class="videos-button" id="videos">VIDEOS</a>
+            </div>
+            <button>Sign Up</button>
+        </nav>
          <div class="container">
-            <div class="heading">Video Gallary</div>
+            <div class="heading">My Videos</div>
             <div class="video-container">
                 <div class="video">
                     <video src="./Videos/Frieren AMV.mp4"></video>
@@ -50,6 +58,39 @@
             }
         }));
 
+    </script>
+     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const slider = document.querySelector(".slider-background");
+            const photosButton = document.getElementById("photos");
+            const videosButton = document.getElementById("videos");
+    
+            if (window.location.href.includes("videography.html")) {
+                slider.style.left = "50.5%"; 
+                slider.style.width = "47.5%";
+                videosButton.style.zIndex = 1;
+                videosButton.classList.add("active");
+            } else {
+                slider.style.left = "4px"; 
+                photosButton.classList.add("active");
+            }
+
+    
+            photosButton.addEventListener("mouseenter", () => {
+                slider.style.left = "4px"; 
+                slider.style.width = "48%";
+                videosButton.style.zIndex = 1;
+                videosButton.style.color = "#fff";
+                photosButton.style.color = "#000";
+            });
+
+            photosButton.addEventListener("mouseleave", () => {
+                slider.style.left = "50.5%"; 
+                slider.style.width = "47.5%";
+                videosButton.style.color = "#000";
+                photosButton.style.color = "#fff";
+            });
+        });
     </script>
     </body>
 </html>
