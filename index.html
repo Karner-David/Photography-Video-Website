@@ -8,7 +8,12 @@
     </head>
     <body>
         <nav>
-            <a href="#">Photos</a>
+            <!-- <a href="#">Photos</a> -->
+            <div class="toggle-container">
+                <div class="slider-background"></div>
+                <a href="index.html" class="photos-button" id="photos">PHOTOS</a>
+                <a href="videography.html" class="videos-button" id="videos">VIDEOS</a>
+            </div>
             <button>Sign Up</button>
         </nav>
         <div class="container">
@@ -153,5 +158,56 @@
                 }
             });
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const slider = document.querySelector(".slider-background");
+                const photosButton = document.getElementById("photos");
+                const videosButton = document.getElementById("videos");
+        
+                // Set the initial position of the slider based on the active page
+                if (window.location.href.includes("videography.html")) {
+                    slider.style.left = "48%"; // Move slider to the right for "VIDEOS"
+                    videosButton.classList.add("active");
+                } else {
+                    slider.style.left = "4px"; // Default position for "PHOTOS"
+                    photosButton.classList.add("active");
+                }
+        
+                // // Hover effects to move the slider
+                // photosButton.addEventListener("mouseenter", () => {
+                //     slider.style.left = "4px"; // Move slider to the left (PHOTOS)
+                // });
+        
+                videosButton.addEventListener("mouseenter", () => {
+                    slider.style.left = "50.5%"; // Move slider to the right (VIDEOS)
+                    slider.style.width = "47.5%";
+                    videosButton.style.zIndex = 1;
+                    videosButton.style.color = "#000";
+                    photosButton.style.color = "#fff";
+                });
+
+                videosButton.addEventListener("mouseleave", () => {
+                    slider.style.left = "4px"; // Return slider to PHOTOS after hover
+                    slider.style.width = "49%";
+                    videosButton.style.color = "#fff";
+                    photosButton.style.color = "#000";
+                });
+        
+                // // Optional: Add a "mouseleave" event to keep the slider on the active button
+                // photosButton.addEventListener("mouseleave", () => {
+                //     if (window.location.href.includes("index.html")) {
+                //         slider.style.left = "4px"; // Ensure slider stays with PHOTOS if it's active
+                //         videosButton.style.zIndex = 0;
+                //     }
+                // });
+        
+                // videosButton.addEventListener("mouseleave", () => {
+                //     if (window.location.href.includes("videography.html")) {
+                //         slider.style.left = "50%"; // Ensure slider stays with VIDEOS if it's active
+                //     }
+                // });
+            });
+        </script>
+        
     </body>
 </html>
